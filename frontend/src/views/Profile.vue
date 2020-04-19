@@ -10,6 +10,10 @@
       {{currentUser.accessToken.substring(0, 20)}} ... {{currentUser.accessToken.substr(currentUser.accessToken.length - 20)}}
     </p>
     <p>
+      <strong>Status:</strong>
+      {{currentUser.status}}
+    </p>
+    <p>
       <strong>Id:</strong>
       {{currentUser.id}}
     </p>

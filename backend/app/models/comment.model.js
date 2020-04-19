@@ -5,7 +5,8 @@ const Comment = mongoose.model(
   new mongoose.Schema({
     title: String,
     comment: String,
-    uid:String
+    uid:String,
+    archived:Boolean
   })
 );
 

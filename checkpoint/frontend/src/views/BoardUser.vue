@@ -1,9 +1,10 @@
 <template>
   <div >
+    <h1>{{user.email}}</h1>
     <header class="jumbotron">
       <h3>{{content}}</h3>
     </header>
-        <router-link  :to="{name: 'comment', params: { admin:false }}" class="nav-link">Comment</router-link>
+        <router-link  :to="{name: 'comment', params: { admin:false,id:user.id }}" class="nav-link">Comment</router-link>
   </div>
 </template>
 
@@ -14,7 +15,8 @@ export default {
   name: 'User',
   data() {
     return {
-      content: ''
+      content: '',
+      user:this.$store.state.auth.user,
     };
   },
   mounted() {

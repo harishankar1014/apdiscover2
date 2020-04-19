@@ -10,7 +10,7 @@ exports.test = (req, res) => {
 exports.view = (req, res) => {
   // res.status(200).send("it works");
     Comment.find({
-      title: req.body.title
+      // title: req.body.title
     })
       .exec((err, comment) => {
         if (err) {
@@ -40,7 +40,8 @@ exports.view = (req, res) => {
     const comment = new Comment({
       title: req.body.title,
       comment: req.body.comment,
-      uid:req.body.uid
+      uid:req.body.uid,
+      archived:false
     });
   
     comment.save((err, user) => {
@@ -69,6 +70,64 @@ exports.view = (req, res) => {
         
     };
 
+    exports.count = (req, res) => {
+      // res.status(200).send("it works");
+        Comment.find({
+          title: req.body.title
+        })
+          .exec((err, comment) => {
+            if (err) {
+              res.status(500).send({ message: err });
+              return;
+            }
+      
+            if (!comment) {
+              return res.status(404).send({ message: "No comments found." });
+            }
+    
+            res.status(200).send({
+                length:comment.length
+            });
+      
+            // res.status(200).send({
+            //   id: user._id,
+            //   username: user.username,
+            //   email: user.email,
+            //   roles: authorities,
+            //   accessToken: token
+            // });
+          });
+      };
+      exports.search = (req, res) => {
+        // res.status(200).send("it works");
+          Comment.find({
+            // title: req.body.title
+          })
+            .exec((err, comment) => {
+              if (err) {
+                res.status(500).send({ message: err });
+                return;
+              }
+        
+              if (!comment) {
+                return res.status(404).send({ message: "No comments found." });
+              }
+      
+              res.status(200).send({
+                  length:comment.length
+              });
+        
+              // res.status(200).send({
+              //   id: user._id,
+              //   username: user.username,
+              //   email: user.email,
+              //   roles: authorities,
+              //   accessToken: token
+              // });
+            });
+        };
+      
+
     exports.update = (req, res) => {
       // res.status(200).send("it works");
       //   Comment.findByIdAndRemove({_id: req.body.id},function(err){
@@ -89,6 +148,91 @@ exports.view = (req, res) => {
             // });
           
       };
+      exports.archive = (req, res) => {
+        // res.status(200).send("it works");
+        //   Comment.findByIdAndRemove({_id: req.body.id},function(err){
+        //     if(err) res.json(err);
+        //     else res.json('Successfully removed');
+        // });
+          Comment.updateMany({uid: req.body.id},{archived:true},function(err){
+            if(err) res.json(err);
+            else res.json('Successfully updated');
+        });
+        
+              // res.status(200).send({
+              //   id: user._id,
+              //   username: user.username,
+              //   email: user.email,
+              //   roles: authorities,
+              //   accessToken: token
+              // });
+            
+        };
+
+        exports.archiveOne = (req, res) => {
+          // res.status(200).send("it works");
+          //   Comment.findByIdAndRemove({_id: req.body.id},function(err){
+          //     if(err) res.json(err);
+          //     else res.json('Successfully removed');
+          // });
+            Comment.findByIdAndUpdate({_id: req.body.id},{archived:true},function(err){
+              if(err) res.json(err);
+              else res.json('Successfully updated');
+          });
+          
+                // res.status(200).send({
+                //   id: user._id,
+                //   username: user.username,
+                //   email: user.email,
+                //   roles: authorities,
+                //   accessToken: token
+                // });
+              
+          };
+
+
+        exports.restore = (req, res) => {
+          // res.status(200).send("it works");
+          //   Comment.findByIdAndRemove({_id: req.body.id},function(err){
+          //     if(err) res.json(err);
+          //     else res.json('Successfully removed');
+          // });
+            Comment.updateMany({uid: req.body.id},{archived:false},function(err){
+              if(err) res.json(err);
+              else res.json('Successfully updated');
+          });
+          
+                // res.status(200).send({
+                //   id: user._id,
+                //   username: user.username,
+                //   email: user.email,
+                //   roles: authorities,
+                //   accessToken: token
+                // });
+              
+          };
+
+          exports.restoreOne = (req, res) => {
+            // res.status(200).send("it works");
+            //   Comment.findByIdAndRemove({_id: req.body.id},function(err){
+            //     if(err) res.json(err);
+            //     else res.json('Successfully removed');
+            // });
+              Comment.findByIdAndUpdate({_id: req.body.id},{archived:false},function(err){
+                if(err) res.json(err);
+                else res.json('Successfully updated');
+            });
+            
+                  // res.status(200).send({
+                  //   id: user._id,
+                  //   username: user.username,
+                  //   email: user.email,
+                  //   roles: authorities,
+                  //   accessToken: token
+                  // });
+                
+            };
+  
 
 
   

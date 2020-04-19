@@ -28,8 +28,8 @@ class CommentService{
       insertComments(comment) {
         return axios.post(API_URL + 'insert', {
           title: comment.title,
-          comment: comment.comment
-          // password: user.password
+          comment: comment.comment,
+          uid:comment.uid
         });
       }
       deleteComments(id) {

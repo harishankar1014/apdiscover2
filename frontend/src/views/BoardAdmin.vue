@@ -5,6 +5,7 @@
       <h3>Admin comment</h3>
     </header>
     <router-link  :to="{name: 'comment', params: { admin:true }}" class="nav-link">Comment</router-link>
+    <router-link  :to="{name: 'viewUsers', params: { admin:true }}" class="nav-link">View All users</router-link>
   </div>
 </template>
 

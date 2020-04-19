@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1>Current user {{ user_id }}</h1>
         <!-- <label for="title">Title</label> -->
         <!-- <input v-model="comment.title" v-validate="'required'" type="text" class="form-control" name="title" /> -->
         <form name="form" @submit.prevent="handleComment">
@@ -12,6 +13,10 @@
           <!-- <input v-model="comment.comment"  type="text" class="form-control" name="comment" /> -->
           <textarea class="form-control" v-model="comment.comment" rows="5"></textarea>
         </div>
+        <!-- <div class="form-group">
+          <label for="comment">ID</label>
+          <input v-model="comment.uid"  type="text" class="form-control" name="id" />
+        </div> -->
         <div class="form-group">
           <button class="btn btn-primary btn-block" >
             <span>Submit</span>
@@ -28,7 +33,9 @@ export default {
   data() {
     return {
       // const formData : new FormData(),
-      comment: new Comment('', ''),
+      comment: new Comment('', '',''),
+      user_id:this.$route.params.user_id,
+      // user_id:this.$route.params.user_id,
     //   submitted: false,
       // successful: false,
       message: ''
@@ -36,7 +43,8 @@ export default {
   },
   methods:{
       handleComment(){
-        console.log(this.comment.comment);
+        console.log(this.comment.id);
+        this.comment.uid=this.user_id;
         // this.$router.push('/comment');
         this.$store.dispatch('comment/insert', this.comment).then(
             () => {

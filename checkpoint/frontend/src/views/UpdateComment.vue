@@ -34,14 +34,14 @@ import axios from 'axios';
 
       data() {
         return {
-          id:'',
+          id:this.$route.params.id,
           comment: new Comment('', '') 
         //   post: {}
         }
       },
       created() {
         //   this.id=this.$route.param.id;
-          console.log("the id "+this.$route.params.id);
+          // console.log("the id "+this.$route.params.id);
         // let uri = `http://localhost:4000/posts/edit/${this.$route.params.title}`;
         // this.axios.get(uri).then((response) => {
         //     this.post = response.data;
@@ -49,12 +49,12 @@ import axios from 'axios';
       },
       methods: {
         updatePost() {
-         console.log("the id "+this.$route.params.id);
-         console.log(this.comment.comment);
+        //  console.log("the id "+this.$route.params.id);
+        //  console.log(this.comment.comment);
          let uri='http://localhost:8080/api/update';
          axios.post(uri,{"id":this.$route.params.id,"comment":this.comment.comment});
-         this.$router.push('/comment');
-         location.reload();
+         this.$router.push({name:'user',params:{id:this.id}});
+        //  location.reload();
         }
       }
     }

@@ -15,6 +15,11 @@ module.exports = function(app) {
   app.post("/api/view", controller.view);
   app.post("/api/delete", controller.delete);
   app.post("/api/update", controller.update);
+  app.post("/api/count", controller.count);
+  app.post("/api/archive", controller.archive);
+  app.post("/api/restore", controller.restore);
+  app.post("/api/archiveOne", controller.archiveOne);
+  app.post("/api/restoreOne", controller.restoreOne);
   // app.get("/api/user", [authJwt.verifyToken], controller.userBoard);
 
   // app.get(

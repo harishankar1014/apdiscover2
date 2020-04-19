@@ -10,7 +10,8 @@ exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    status:"active"
   });
 
   user.save((err, user) => {
@@ -103,7 +104,59 @@ exports.signin = (req, res) => {
         username: user.username,
         email: user.email,
         roles: authorities,
+        status:user.status,
         accessToken: token
       });
     });
 };
+
+exports.activeUsers = (req, res) => {
+  User.find({
+    status: "active"
+  })
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+
+      if (!user) {
+        return res.status(404).send({ message: "No active users found." });
+      }
+
+      res.status(200).send({
+        user:user,
+        length:user.length
+        // id: user._id,
+        // username: user.username
+      });
+    });
+  
+    
+};
+
+exports.allUsers = (req, res) => {
+  User.find({
+    // status: "active"
+  })
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+
+      if (!user) {
+        return res.status(404).send({ message: "No active users found." });
+      }
+
+      res.status(200).send({
+        user:user
+        // length:user.length
+        // id: user._id,
+        // username: user.username
+      });
+    });
+  
+    
+};
+

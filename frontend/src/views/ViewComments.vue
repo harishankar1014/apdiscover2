@@ -1,28 +1,33 @@
 <template>
   <div class="container">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+          <!-- <h1>{{displayedPosts}}</h1> -->
     <header class="jumbotron">
-    <li v-for="c in content" :key="c.comment">
-         <ul>
-             <h1 >{{c[0].title}}</h1>
-             <br>
-             <h1>The current user is {{user_id}}</h1>
-             <!-- <h1>{{this.$route.params.admin}}</h1> -->
-             <li v-for="enteries in c" :key="enteries.comment">
-               <div class="card w3-hover-shadow">
+          <h1>Search</h1>
+          <input v-model="search"  type="text" placeholder="search box"/>
+        <!-- <br>
+        <div class="form-group">
+          <label for="title">Regex</label>
+          <input v-model="regex"  type="text" class="form-control" name="title" />
+          <p>{{ regex | set }} </p>
+        </div> -->
+      <!-- <p>Hi {{ name | fallback }}!</p> - -->
+      <!-- {{ test }} -->
+      <!-- {{ filteredComments }} -->
+      <ol v-for="enteries in filteredComments" :key="enteries.comment">
+               <div v-if="enteries.title=='one' && enteries.archived== false" class="card w3-hover-shadow">
                <div class="container">
               <h3>{{enteries.comment}}</h3>
-              <h3>{{ enteries.uid }}</h3>
               <h5><button v-if="admin || user_id == enteries.uid "  class="btn btn-danger" @click.prevent="handleDelete(enteries._id)">Delete</button></h5>
-              <h5><router-link :to="{name: 'editComment', params: { id: user_id,comment: enteries.comment }}" class="btn btn-primary">Edit</router-link></h5>
+              <h5 v-if="admin || user_id == enteries.uid "><router-link :to="{name: 'editComment', params: { id: enteries._id,comment: enteries.comment }}" class="btn btn-primary">Edit</router-link></h5>
+              <h5><button v-if="admin || user_id == enteries.uid "  class="btn btn-danger" @click.prevent="handleArchive(enteries._id)">Archive</button></h5>
               </div>
                </div>
-             </li>
-             <!-- <jw-pagination :items="c" @changePage="onChangePage"></jw-pagination> -->
-         </ul>
-     </li>
+             </ol>
     </header>
     <router-link  :to="{name: 'addComment', params: { user_id: user_id }}" class="nav-link">Add Comment</router-link>
+    <router-link  :to="{name: 'userComment', params: { user_id: user_id,comment:content }}" class="nav-link">View My Comment</router-link>
+    <router-link  :to="{name: 'archivedComments', params: { user_id: user_id,comment:content }}" class="nav-link">Archived Comment</router-link>
 </div>
 </template>
 
@@ -34,17 +39,32 @@ export default {
   name: 'Comment',
   data() {
     return {
-      content:'',
+      content:[],
+      test:this.ret,
       user_id:this.$route.params.id,
       comment: new Comment('', ''),
       admin:this.$route.params.admin,
-      // admin:this.$route.params.admin,
+      search:"",
+      start:0,
+      fComments:this.filteredComments
+      
     };
   },
+  created()
+  {
+      this.length=axios.post('http://localhost:8080/api/count',{"title":"one"});
+      // console.log(this.length);
+      //  this.length=axios.post('http://localhost:8080/api/count',{"title":"one"});
+      //  console.log(this.length);
+  },
   mounted() {
+    // console.log("mounted");
     CommentService.getTest().then(
       response => {
         this.content = response.data;
+        this.test = response.data.comment;
+        // this.length=response.data.length;
+        // console.log(this.length);
       },
       error => {
         this.content =
@@ -53,27 +73,40 @@ export default {
           error.toString();
       }
     );
-    // console.log(this.content[0]);
+    // this.length=axios.post('http://localhost:8080/api/count',{"title":"one"});
+
+    
     // this.admin=this.$route.params.admin;
   },
   methods: {
       handleDelete(id)
       {
-        console.log(id);
+        // console.log(id);
         let uri='http://localhost:8080/api/delete';
         axios.post(uri,{"id":id});
         location.reload();
-      },
-      previousPage()
-      {
-          console.log("previousPage");
-      },
-      nextPage()
-      {
-          console.log("nextPage");
       }
+    },
+    computed:
+    {
+        // test:this.content[0],
+        filteredComments: function(){
+          //  return this.test.filter((enteries)=>{
+              // enteries.comment.match(/active/g);
+              // enteries;
+          //  })
+          // return this.test.filter(enteries=>enteries.comment.match(this.search));
+          // var ret = this.test.filter(c => c.comment === "active comment");
+            // return this.test.filter(c =>{c.comment.toLowerCase()});
+            var ret= this.test.filter(c =>{ return c.comment.toLowerCase().includes(this.search)});
+          return ret;
+        },
+        displayedPosts () {
+      return this.test
+    }
     }
 };
+
 </script>
 
 <style scoped>
