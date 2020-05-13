@@ -1,0 +1,13 @@
+[Unit]
+Description=APDiscoverJWT
+After=network.target
+[Service]
+ExecStart=/home/ubuntu/apdiscover/apdiscover_node/jwt/tokenManagement.js
+Restart=always
+User=ubuntu
+Group=ubuntu
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/home/ubuntu/apdiscover/apdiscover_node/jwt/
+[Install]
+WantedBy=multi-user.target

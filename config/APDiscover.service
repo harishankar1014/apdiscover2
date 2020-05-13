@@ -1,0 +1,13 @@
+[Unit]
+Description=APDiscover
+After=network.target
+[Service]
+ExecStart=/home/ubuntu/apdiscover/apdiscover_node/Apsearch.js
+Restart=always
+User=ubuntu
+Group=ubuntu
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/home/ubuntu/apdiscover/apdiscover_node
+[Install]
+WantedBy=multi-user.target
